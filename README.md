@@ -20,8 +20,10 @@ qb_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Footb
 rb_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Running_Back_Stats.csv")
 wr_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Wide_Receiver_Stats.csv")
 te_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Tight_End_Stats.csv")
+k_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Kicker_Stats.csv")
+dst_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_DST_Stats.csv")
 
-frames = [qb_df, rb_df, wr_df, te_df]
+frames = [qb_df, rb_df, wr_df, te_df, k_df, dst_df]
 final_df = pd.concat(frames)
 points_column = final_df.pop('FPTS')
 final_df.insert(2, 'FPTS', points_column)
@@ -61,19 +63,24 @@ The flex position can be filled with either a WR, RB, or TE. So it's baseline va
 These baselines, plus one, are then used to find a position's "replacement player" and their respective point value.  
 So the QB position, which has a baseline of 12, would have a replacement player that is represented by the 13th ranked QB.
 ```
-rb_df_vor_cutoff = rb_df[:31]
-qb_df_vor_cutoff = qb_df[:13]
-wr_df_vor_cutoff = wr_df[:31]
-te_df_vor_cutoff = te_df[:13]
+qb_vor_cutoff = qb_df[:13]
+rb_vor_cutoff = rb_df[:29]
+wr_vor_cutoff = wr_df[:29]
+te_vor_cutoff = te_df[:17]
+k_vor_cutoff = k_df[:13]
+dst_vor_cutoff = dst_df[:13]
 
-df_vor_cutoff = [rb_df_vor_cutoff, qb_df_vor_cutoff, wr_df_vor_cutoff, te_df_vor_cutoff]
+
+df_vor_cutoff = [rb_vor_cutoff, qb_vor_cutoff, wr_vor_cutoff, te_vor_cutoff, k_vor_cutoff, dst_vor_cutoff]
 df_vor_cutoff = pd.concat(df_vor_cutoff)
 df_vor_cutoff.sort_values(by='FPTS', ascending=False, inplace=True)
 replacement_players = {
-    'RB':'',
     'QB':'',
+    'RB':'',
     'WR':'',
-    'TE':''
+    'TE':'',
+    'K': '',
+    'DST': ''
     }
 
 for _, row in df_vor_cutoff.iterrows():
