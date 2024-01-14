@@ -1,14 +1,13 @@
-# Using Python to calculate NFL Fantasy Football player positional values
+# 🏈    Using Python to calculate Fantasy Football player values
 
 [![](https://img.shields.io/badge/Python-3.8.1-FFD43B?style=for-the-badge&logo=python&logoColor=blue)](https://www.python.org/downloads/)
 [![](https://img.shields.io/badge/Spyder%20IDE-838485?style=for-the-badge&logo=spyder%20ide&logoColor=maroon)](https://www.spyder-ide.org/)
 
 ## Intializing/Setting things up ##
 
-Import and clean Week 1-16 Half PPR player stats downloaded from FantasyPros
+Import and clean NFL 2023 Season Week 1-17 Half-PPR player stats downloaded from FantasyPros
 ```
 import pandas as pd
-
 import seaborn as sns
 sns.set_style('whitegrid')
 
@@ -16,12 +15,16 @@ pd.set_option("display.max_columns",200)
 pd.set_option("display.max_rows",1000)
 pd.set_option('display.width', 1000)
 
+###
+
 qb_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Quarterback_Stats.csv")
 rb_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Running_Back_Stats.csv")
 wr_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Wide_Receiver_Stats.csv")
 te_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Tight_End_Stats.csv")
 k_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_Kicker_Stats.csv")
 dst_df = pd.read_csv("https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Player%20Stats%20and%20Data%20from%20FantasyPros/2023_NFL_DST_Stats.csv")
+
+###
 
 frames = [qb_df, rb_df, wr_df, te_df, k_df, dst_df]
 final_df = pd.concat(frames)
@@ -41,14 +44,14 @@ VORP also takes into account positional roster limits that are set in fantasy le
 ```
 print(final_df.iloc[0:12,0:3])
 ```
-![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/total_points_ranking.PNG)
+![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/points_ranks.PNG)
 
-Looking at total fantasy points scored, one would assume that, because QBs make up most of the highest ranked players, they should be prioritized in a draft.
+Looking at total fantasy points scored, one would assume that QBs should be prioritized in a draft since they make up most of the highest ranked players
 
 ## Positional Scarcity and Roster Limits ##
-However, based off the common roster setting: 1 QB / 2 RB / 2 WR / 1 TE / 1 Flex ,  only 1 QB can be started at a time, while up to 3 RBs or 3 WRs may be started.  
+However, based off the common roster setting: 1 QB / 2 RB / 2 WR / 1 TE / 1 Flex / 1 K / 1 DST ,  only 1 QB can be started at a time, while up to 3 RBs or 3 WRs may be started.  
 The amount of players that can be started for a given position creates what is known as positional scarcity.  
-This scarcity results in the inflation of RB and WR player values.
+This scarcity results in the inflation of RB and WR player values because the amount of "viable" players is limited. 
 
 To calculate how large this increase in value is, multiple the number of players in that position that can
 be started, with the amount of people within the fantasy league.  
@@ -56,7 +59,7 @@ For example, in a 12 team league, it would be 12(teams) x 1(QB) = 12 baseline
 The flex position can be filled with either a WR, RB, or TE. So it's baseline value of 12 is divided and added onto the WR/RB/TE baselines.
 
 + WR/RB:&nbsp; 12(teams) x 2(position) + 4(flex) = 28
-+ QB: &nbsp; &nbsp; &nbsp; &nbsp; 12 x 1 = 12
++ QB/K/DST: &nbsp; &nbsp; &nbsp; &nbsp; 12 x 1 = 12
 + TE:  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 12 x 1 + 4 = 16
 
 ## Replacement Players and Values
@@ -74,6 +77,9 @@ dst_vor_cutoff = dst_df[:13]
 df_vor_cutoff = [rb_vor_cutoff, qb_vor_cutoff, wr_vor_cutoff, te_vor_cutoff, k_vor_cutoff, dst_vor_cutoff]
 df_vor_cutoff = pd.concat(df_vor_cutoff)
 df_vor_cutoff.sort_values(by='FPTS', ascending=False, inplace=True)
+
+###
+
 replacement_players = {
     'QB':'',
     'RB':'',
@@ -93,7 +99,9 @@ for _, row in df_vor_cutoff.iterrows():
 print(replacement_players)
 ```
 
+
 ![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/replacement_players.PNG)
+
 
 ```
 replacement_values = {}    
@@ -106,9 +114,11 @@ for position, player_name in replacement_players.items():
 print(replacement_values)
 ```
 
-![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/replacement_points.PNG)
 
-## Draft Rankings vs Final Rankings
+![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/replacement_values.PNG)
+
+
+## Total Points vs VORP
 
 A formula is then used to subtract, based off of their position, the replacement players fantasy points from the points of every player to get their final VOR score.
 
@@ -124,6 +134,62 @@ final_df.reset_index(drop=True, inplace=True)
 
 print(final_df.iloc[0:12,0:4])
 ```
-![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/vor_ranking.PNG)
+![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/vor_ranks.PNG)
 
-As you can see, Josh Allen is only ranked 5th in VORP despite being ranked 1st in total fantasy points.
+As you can see, Josh Allen is only 4th in total VORP despite being ranked 1st in total fantasy points. Dak Prescott who was 5th in total points isn't in the top 12 of VORP.
+
+
+## Expectations vs Reality
+
+Patrick Mahomes was the fantasy consensus #1 QB in pre-season rankings. Josh Allen was the #1 QB in VOR.   
+In the previous season, Miles Sanders was selected for the NFL Pro Bowl and started in the Super Bowl.   
+Christian Mccaffrey was #1 in VOR while Austin Ekeler was consensus #2 RB in pre-season rankings.   
+Justin Jefferson was rated the #1 overall fantasy draft pick. Tyreek Hill was the #2 WR in VOR and pre-season rankings.
+
+
+```
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+
+###
+
+names = ['Mahomes','Allen','Sanders','Mccaffrey','Ekeler', 'Jefferson', 'Tyreek']
+y_pos = np.arange(len(names))
+player_vor = [final_df.loc[43,'VOR'],final_df.loc[3,'VOR'], final_df.loc[269,'VOR'], final_df.loc[0,'VOR'], final_df.loc[114,'VOR'], final_df.loc[161,'VOR'], final_df.loc[2,'VOR']]
+colors = ["red" if i < 0 else "blue" for i in player_vor]
+
+###
+
+plt.bar(y_pos, player_vor, align='center', color = colors)
+
+ax = plt.gca()
+ax.set_xticklabels([])
+ax.grid()
+
+ax.yaxis.set_major_locator(ticker.MultipleLocator(25))
+ax.spines["bottom"].set_position(("data", 0))
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+
+
+label_offset = 0.5
+for players_names, (x_position, y_position) in zip(names, enumerate(player_vor)):
+    if y_position > 0:
+        label_y = -label_offset
+    else:
+        label_y = y_position - label_offset
+    ax.text(x_position, label_y, players_names, ha="center", va="top", fontsize=8)
+
+plt.ylabel('VOR')
+plt.show()
+```
+![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/player_vor_graph.png)
+
+
+## Final Thoughts
+
+Kicker and DST VORP seem high compared to their overall rankings and average draft position. That's because it doesn't take into account injury risk which further increases the inherent value of skill position players.
+
+
+VORP is not a direct
