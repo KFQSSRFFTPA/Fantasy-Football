@@ -1,4 +1,4 @@
-# 🏈    Using Python to calculate Fantasy Football player values
+# 🏈    Using Python to calculate Fantasy Football player values (VORP)
 
 [![](https://img.shields.io/badge/Python-3.8.1-FFD43B?style=for-the-badge&logo=python&logoColor=blue)](https://www.python.org/downloads/)
 [![](https://img.shields.io/badge/Spyder%20IDE-838485?style=for-the-badge&logo=spyder%20ide&logoColor=maroon)](https://www.spyder-ide.org/)
