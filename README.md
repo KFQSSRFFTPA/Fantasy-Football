@@ -38,7 +38,7 @@ final_df.reset_index(drop=True, inplace=True)
 
 ## VORP ##
 **VORP**, which stands for *value over replacement player*, is a metric that is used to determine how valuable individual players are
-relative to one another. There are many different standards and ways of calculating VORP.  
+relative to one another. There are many different standards and ways of calculating VORP/VOR.  
 In fantasy football, VORP can be used to rank players despite them being in different skill positions.   
 VORP also takes into account positional roster limits that are set in fantasy leagues.
 ```
@@ -118,7 +118,7 @@ print(replacement_values)
 ![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/replacement_values.PNG)
 
 
-## Total Points vs VORP
+## Total Points vs VOR
 
 A formula is then used to subtract, based off of their position, the replacement players fantasy points from the points of every player to get their final VOR score.
 
@@ -136,7 +136,7 @@ print(final_df.iloc[0:12,0:4])
 ```
 ![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/vor_ranks.PNG)
 
-As you can see, Josh Allen is only 4th in total VORP despite being ranked 1st in total fantasy points. Dak Prescott who was 5th in total points isn't in the top 12 of VORP.
+As you can see, Josh Allen is only 4th in total VOR despite being ranked 1st in total fantasy points. Dak Prescott who was 5th in total points isn't in the top 12 of VOR.
 
 
 ## Expectations vs Reality
@@ -190,6 +190,29 @@ plt.show()
 ## Final Thoughts
 
 Kicker and DST VORP seem high compared to their overall rankings and average draft position. That's because it doesn't take into account injury risk which further increases the inherent value of skill position players.
+```
+final_df.sort_values(by='VOR', ascending=False, inplace=True)
 
+qb_injury = qb_df[:24]
+rb_injury = rb_df[:24]
+wr_injury = wr_df[:24]
+te_injury = te_df[:24]
+k_injury = k_df[:24]
+
+
+print(len(qb_injury.loc[(qb_injury['G'] < 16)]))
+print(len(rb_injury.loc[(rb_injury['G'] < 16)]))
+print(len(wr_injury.loc[(wr_injury['G'] < 16)]))
+print(len(te_injury.loc[(te_injury['G'] < 16)]))
+print(len(k_injury.loc[(k_injury['G'] < 16)]))
+
+```
+Of the top 24 players in each position, **only 2 kickers** missed playing at least one week during the fantasy season(17 weeks).
+The other 4 positions each had 11 to 12 players that missed at least one game
+
+other reasons for this disconnect include:
++ The best kicker and defense have a lower potential VOR ceiling compared to the top players in other skill positions.
++ People feel that predicting the top kicker and defense for the whole season is harder than predicting for other positions
++ Many believe that K/DST points are extremely matchup dependent and are willing to replace them each week using the waiver wire
 
 VORP is not a direct
