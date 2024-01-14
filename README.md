@@ -58,13 +58,14 @@ be started, with the amount of people within the fantasy league.
 For example, in a 12 team league, it would be 12(teams) x 1(QB) = 12 baseline  
 The flex position can be filled with either a WR, RB, or TE. So it's baseline value of 12 is divided and added onto the WR/RB/TE baselines.
 
-+ WR/RB:&nbsp; 12(teams) x 2(position) + 4(flex) = 28
-+ QB/K/DST: &nbsp; &nbsp; &nbsp; &nbsp; 12 x 1 = 12
-+ TE:  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 12 x 1 + 4 = 16
++ WR/RB: &nbsp; &nbsp; &nbsp; 12(teams) x 2(position) + 4(flex) = 28
++ QB/K/DST:&nbsp; 12 x 1 = 12
++ TE: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 12 x 1 + 4 = 16
 
 ## Replacement Players and Values
-These baselines, plus one, are then used to find a position's "replacement player" and their respective point value.  
-So the QB position, which has a baseline of 12, would have a replacement player that is represented by the 13th ranked QB.
+These baselines, plus one, are then used to find a position's "replacement player" and their respective fantasy points scored value.  
+So the QB position, which has a baseline of 12, would have a replacement player who is represented by the 13th ranked QB.   
+That would be C.J. Stroud with 260 points.
 ```
 qb_vor_cutoff = qb_df[:13]
 rb_vor_cutoff = rb_df[:29]
@@ -189,7 +190,8 @@ plt.show()
 
 ## Kickers and Defense
 
-Kicker and DST VORP seem high compared to their overall rankings and average draft position. That's because it doesn't take into account injury risk which further increases the inherent value of skill position players.
+Compared to their overall low rankings and late average draft position(ADP), Kicker and DST VOR seem quite high.   
+That's because it doesn't take into account injury risk which further increases the inherent value of skill position players.
 ```
 final_df.sort_values(by='VOR', ascending=False, inplace=True)
 
@@ -215,9 +217,9 @@ print(missed_games)
 ![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/missed_games.PNG)
 
 Of the top 24 players by VOR in each position, **only 2 kickers** missed playing at least one game during the fantasy season(17 weeks).   
-The other 4 positions each had 11 to 12 players that missed a minimum of one week
+The other 4 positions each had 11 to 12 players that missed a minimum of one week.
 
-Other reasons for this disconnect include:
+Other reasons for this disconnect between ADP and VOR include:
 + The best kicker and defense have a lower potential VOR ceiling compared to the top players in other skill positions.
 + People feel that predicting the top kicker and defense for the whole season is harder than predicting for other positions
 + Many believe that K/DST points are extremely matchup dependent and are willing to replace them each week using the waiver wire
@@ -229,4 +231,4 @@ Draft rankings are not absolute; player values dynamically change as a draft pro
 Someone who begins their first 3 draft picks as: RB/RB/RB, would prioritize a different position for their 4th pick.   
 And If the highest ranked player left for your next pick is a TE, it wouldn't make much sense to get him if you already have 2 TEs.
 
-Although VORP is a good metric for ranking fantasy players, when using pre-season points projections or post-season stats, it is not a direct 1:1 representation of what player *draft* rankings should be.   
+Although VORP is a good metric for ranking fantasy players, when using pre-season points projections or post-season stats, it is not a direct 1:1 representation of what player draft rankings should be.   
