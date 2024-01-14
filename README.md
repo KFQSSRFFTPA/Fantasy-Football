@@ -32,7 +32,7 @@ points_column = final_df.pop('FPTS')
 final_df.insert(2, 'FPTS', points_column)
 final_df = final_df.sort_values('FPTS', ascending=False)
 final_df.sort_values('FPTS', ascending=False, inplace=True)
-final_df = final_df.loc[(final_df['FPTS'] > 1)]
+final_df = final_df.loc[(final_df['G'] > 1)]
 final_df.reset_index(drop=True, inplace=True)
 ```
 
@@ -187,32 +187,46 @@ plt.show()
 ![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/player_vor_graph.png)
 
 
-## Final Thoughts
+## Kickers and Defense
 
 Kicker and DST VORP seem high compared to their overall rankings and average draft position. That's because it doesn't take into account injury risk which further increases the inherent value of skill position players.
 ```
 final_df.sort_values(by='VOR', ascending=False, inplace=True)
 
-qb_injury = qb_df[:24]
-rb_injury = rb_df[:24]
-wr_injury = wr_df[:24]
-te_injury = te_df[:24]
-k_injury = k_df[:24]
+qb_missed = qb_df[:24]
+rb_missed = rb_df[:24]
+wr_missed = wr_df[:24]
+te_missed = te_df[:24]
+k_missed = k_df[:24]
 
+###
 
-print(len(qb_injury.loc[(qb_injury['G'] < 16)]))
-print(len(rb_injury.loc[(rb_injury['G'] < 16)]))
-print(len(wr_injury.loc[(wr_injury['G'] < 16)]))
-print(len(te_injury.loc[(te_injury['G'] < 16)]))
-print(len(k_injury.loc[(k_injury['G'] < 16)]))
+missed_games = {
+    'QB' : len(qb_missed.loc[(qb_missed['G'] < 16)]),
+    'RB' : len(rb_missed.loc[(rb_missed['G'] < 16)]),
+    'WR' : len(wr_missed.loc[(wr_missed['G'] < 16)]),
+    'TE' : len(te_missed.loc[(te_missed['G'] < 16)]),
+    'K'  : len(k_missed.loc[(k_missed['G'] < 16)])
+    }
+
+print(missed_games)
 
 ```
-Of the top 24 players in each position, **only 2 kickers** missed playing at least one week during the fantasy season(17 weeks).
-The other 4 positions each had 11 to 12 players that missed at least one game
+![](https://raw.githubusercontent.com/KFQSSRFFTPA/Fantasy-Football/main/Images/missed_games.PNG)
 
-other reasons for this disconnect include:
+Of the top 24 players by VOR in each position, **only 2 kickers** missed playing at least one game during the fantasy season(17 weeks).   
+The other 4 positions each had 11 to 12 players that missed a minimum of one week
+
+Other reasons for this disconnect include:
 + The best kicker and defense have a lower potential VOR ceiling compared to the top players in other skill positions.
 + People feel that predicting the top kicker and defense for the whole season is harder than predicting for other positions
 + Many believe that K/DST points are extremely matchup dependent and are willing to replace them each week using the waiver wire
 
-VORP is not a direct
+## Final Thoughts
+Everyone drafts differently.
+
+Draft rankings are not absolute; player values dynamically change as a draft progresses. They start at different draft positions, they might not follow the same expert lists, they have their own biases towards players, and they have to meet their own roster requirements.   
+Someone who begins their first 3 draft picks as: RB/RB/RB, would prioritize a different position for their 4th pick.   
+And If the highest ranked player left for your next pick is a TE, it wouldn't make much sense to get him if you already have 2 TEs.
+
+Although VORP is a good metric for ranking fantasy players, when using pre-season points projections or post-season stats, it is not a direct 1:1 representation of what player *draft* rankings should be.   
