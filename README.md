@@ -154,6 +154,14 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
 ###
+final_df.index[final_df['Player'] == 'Josh Allen (BUF)']
+final_df.index[final_df['Player'] == 'Miles Sanders (CAR)']
+final_df.index[final_df['Player'] == 'Christian McCaffrey (SF)']
+final_df.index[final_df['Player'] == 'Austin Ekeler (LAC)']
+final_df.index[final_df['Player'] == 'Justin Jefferson (MIN)']
+final_df.index[final_df['Player'] == 'Tyreek Hill (MIA)']
+
+###
 
 names = ['Mahomes','Allen','Sanders','Mccaffrey','Ekeler', 'Jefferson', 'Tyreek']
 y_pos = np.arange(len(names))
