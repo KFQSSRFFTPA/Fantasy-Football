@@ -235,7 +235,7 @@ Other reasons for this disconnect between ADP and VOR include:
 ## Final Thoughts
 Everyone drafts differently.
 
-Draft rankings are not absolute; player values dynamically change as a draft progresses. They start at different draft positions, they might not follow the same expert lists, they have their own biases towards players, and they have to meet their own roster requirements.   
+Draft rankings are not absolute; player values dynamically change as a draft progresses. People start at different draft positions, they might not follow the same expert lists, they have their own biases towards players, and they have to meet their own roster requirements.   
 Someone who begins their first 3 draft picks as: RB/RB/RB, would prioritize a different position for their 4th pick.   
 And If the highest ranked player left for your next pick is a TE, it wouldn't make much sense to get him if you already have 2 TEs.
 
